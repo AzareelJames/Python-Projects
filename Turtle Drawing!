@@ -1,0 +1,21 @@
+import turtle
+import keyboard
+x, y = (0, 0)
+t = turtle.Turtle()
+t.setheading(90)
+while True:
+    if keyboard.is_pressed("space"):
+        t.pendown()
+    else:
+        t.penup()
+    if keyboard.is_pressed("w"):
+        y+=1
+    if keyboard.is_pressed("s"):
+        y-=1
+    if keyboard.is_pressed("a"):
+        x-=1
+    if keyboard.is_pressed("d"):
+        x+=1
+    if keyboard.is_pressed("."):
+        t.clear()
+    t.goto(x, y)
