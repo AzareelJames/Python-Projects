@@ -1,0 +1,32 @@
+import turtle
+import math
+import keyboard
+turtle.tracer()
+t = turtle.Turtle()
+t.penup()
+t.hideturtle()
+t.speed(0)
+t.goto(-300, 0)
+t.pendown()
+turtle.Screen().title("Sine Wave")
+sine = 0
+speed = 30
+length = 50
+while True:
+    sine += 0.01
+    current_sine_wave = ((math.sin(sine * speed)) *length) + 0
+    t.goto(t.xcor(), current_sine_wave)
+    if keyboard.is_pressed("right"):
+        speed += 1
+    elif keyboard.is_pressed("left"):
+        speed -= 1
+    elif keyboard.is_pressed("up"):
+        length += 1
+    else:
+        if keyboard.is_pressed("down"):
+            length -= 1
+    if t.xcor() >= 300:
+        t.goto(-300, t.ycor())
+        t.clear()
+    t.goto(t.xcor() + 1, t.ycor())
+    turtle.update()
