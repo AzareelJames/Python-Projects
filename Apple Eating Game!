@@ -1,0 +1,192 @@
+import turtle
+import random
+# Note: This game is built with Me and ChatGPT
+# Intructions:
+# WSAD to Move
+# Do not touch the bombs (Black)
+# Eat Apples (Red) to gain score!
+# Setup screen
+screen = turtle.Screen()
+screen.title("Apple Eating Game!")
+screen.setup(width=500, height=500)
+screen.bgcolor("#024d0b")
+root = screen._root
+root.resizable(False, False)
+root.attributes('-fullscreen', False)
+
+# Setup text
+text = turtle.Turtle()
+text.pencolor("#686868")
+text.penup()
+text.hideturtle()
+text.speed(0)
+text.goto(0, 130)
+text.write("Loading...", align="center", font=("Arial", 25, "normal"))
+
+# Create player sprite
+player = turtle.Turtle()
+player.shape("square")
+player.color("yellow")
+player.penup()
+
+# Create multiple apples
+apple_count = 5
+apples = []
+
+for _ in range(apple_count):
+    a = turtle.Turtle()
+    a.shape("circle")
+    a.color("red")
+    a.penup()
+    a.speed(0)
+    x = random.randint(-230, 230)  # Avoid edge clipping
+    y = random.randint(-230, 230)
+    a.goto(x, y)
+    a.showturtle()
+    apples.append(a)
+
+# Create multiple bombs
+bombs_count = 7
+bombs = []
+
+for _ in range(bombs_count):
+    b = turtle.Turtle()
+    b.shape("circle")
+    b.color("#302f2e")
+    b.penup()
+    b.speed(0)
+    x_ = random.randint(-230, 230)  # Avoid edge clipping
+    y_ = random.randint(-230, 230)
+    b.goto(x_, y_)
+    b.showturtle()
+    bombs.append(b)
+
+# Place player somewhere not too close to any apple or bomb
+def is_too_close(x, y, others, min_dist=80):
+    for obj in others:
+        if ((x - obj.xcor()) ** 2 + (y - obj.ycor()) ** 2) ** 0.5 < min_dist:
+            return True
+    return False
+
+while True:
+    px = random.randint(-230, 230)
+    py = random.randint(-230, 230)
+    if not is_too_close(px, py, apples + bombs):
+        player.goto(px, py)
+        break
+
+# Speed of movement and score
+speed = 3
+score = 0
+
+# Movement flags
+move_up_flag = False
+move_down_flag = False
+move_left_flag = False
+move_right_flag = False
+
+# Movement functions
+def change_y_on_player(change_y):
+    player.sety(player.ycor() + change_y)
+
+def change_x_on_player(change_x):
+    player.setx(player.xcor() + change_x)
+
+# Game update loop
+def update():
+    if move_up_flag:
+        change_y_on_player(speed)
+    if move_down_flag:
+        change_y_on_player(-speed)
+    if move_left_flag:
+        change_x_on_player(-speed)
+    if move_right_flag:
+        change_x_on_player(speed)
+
+    check_collision()
+    bomb_collision()
+    screen.ontimer(update, 16)  # ~60 FPS
+
+# Draw score once per change
+def draw_score():
+    text.clear()
+    text.write(f"Score: {score}", align="center", font=("Arial", 25, "normal"))
+
+# Collision detection
+def check_collision():
+    global score
+    for a in apples:
+        if player.distance(a) < 25:
+            score += 1
+            a.hideturtle()
+            x = random.randint(-230, 230)
+            y = random.randint(-230, 230)
+            a.goto(x, y)
+            a.showturtle()
+            draw_score()
+
+def bomb_collision():
+    global score
+    for b in bombs:
+        if player.distance(b) < 25:
+            score -= random.randint(3, 13)
+            if score < 0:
+                score = 0
+            b.hideturtle()
+            x_ = random.randint(-230, 230)
+            y_ = random.randint(-230, 230)
+            b.goto(x_, y_)
+            b.showturtle()
+            draw_score()
+
+# Key press handlers
+def press_up():
+    global move_up_flag
+    move_up_flag = True
+
+def press_down():
+    global move_down_flag
+    move_down_flag = True
+
+def press_left():
+    global move_left_flag
+    move_left_flag = True
+
+def press_right():
+    global move_right_flag
+    move_right_flag = True
+
+# Key release handlers
+def release_up():
+    global move_up_flag
+    move_up_flag = False
+
+def release_down():
+    global move_down_flag
+    move_down_flag = False
+
+def release_left():
+    global move_left_flag
+    move_left_flag = False
+
+def release_right():
+    global move_right_flag
+    move_right_flag = False
+
+# Key bindings
+screen.listen()
+screen.onkeypress(press_up, "w")
+screen.onkeyrelease(release_up, "w")
+screen.onkeypress(press_down, "s")
+screen.onkeyrelease(release_down, "s")
+screen.onkeypress(press_left, "a")
+screen.onkeyrelease(release_left, "a")
+screen.onkeypress(press_right, "d")
+screen.onkeyrelease(release_right, "d")
+
+# Draw initial score and start loop
+draw_score()
+update()
+
+# Keep window open
+turtle.done()
