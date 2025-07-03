@@ -1,0 +1,105 @@
+"Welcome! Use console or book to explore!"
+"Scroll down and you see the test category, good luck!"
+from os import system, name # import functions from os
+"console"
+class console:
+    "This console makes you faster at programming."
+    "This function does convert text to binary."
+    def binary(text):
+        "Converts to a binary"
+        output = ""
+
+        for chr in text: # for chr in text loop
+            output += f"{str(bin(ord(chr)))[2:]} "
+
+        return output # Returns binary
+    
+    "Converts to a decimal"
+    def decimal(text):
+        "Converts to a decimal"
+        output = ""
+
+        for chr in text: # Same as binary() function
+            output += f"{ord(chr)} "
+
+        return output # Returns decimal
+    
+    "Converts to it's opposite"
+    def opposite(number):
+        "This makes the number opposite except 0"
+        number = str(number)
+        class NotaNumberError(Exception): ...
+
+        if not number.replace("-", "").replace(".", "").isdigit():
+            raise NotaNumberError(f"Invalid Number {number}")
+        number = float(number)
+        
+        return 0 - number if number > 0 else abs(number) if number < 0 else number
+    
+    "Use clear() to clear the terminal"
+    def clear():
+        "This clears the terminal"
+        system("cls") if name == "nt" else system("clear")
+    
+    "Floor"
+    def floor(float):
+        "Use int(float) instead of math.floor() from math module."
+        return int(float)
+    
+    "cmd"
+    def cmd(command=""):
+        class InvalidOsError(Exception): ...
+        "Opens cmd"
+        if not name in ["posix", "nt"]:
+            raise InvalidOsError(f"Invalid os: {name}")
+        system(f"start cmd /k {command}")
+
+    "and Ceiling!"
+    def ceiling(float):
+        "Use int(float) + 1 instead of math.ceiling from math module."
+        return int(float) + 1
+"book"
+class book:
+    def __init__(self, name, author, letter=""): # __init__
+        "You can make your own book!"
+        self.name = name
+        self.author = author 
+        self.letter = letter
+
+    "Write Editor"
+    def write(self, letter): self.letter += str(letter) # This makes write the letter of the book.
+    def set(self, letter): self.letter = str(letter) # This makes set the letter of the book.
+    def clear(self): self.letter = "" # This makes clears the letter of the book.
+    def __str__(self): return f"|Book Name: {self.name}, Author: {self.author}, Length: {len(self.letter)}|\n" \
+    f"{self.letter}" # Shows the result.
+
+"Test"
+if __name__ == "__main__": # Executes if __name__ == "__main__"
+    print(console.binary("Hello World!")) # binary
+    print(console.decimal("Hello World!")) # decimal
+    print("\n" * 10) # Space 10 times
+    "My own story"
+    my_test_book = book("My test book", "Azareel James")
+    my_test_book.write("Hello World, This is my test book!\n" \
+    "Well, you can make your own book! Let's begin my story!\n" \
+    "Once upon a time, my older brother said 'you should learn python.' " \
+    "Then I have to try to learn python. In sunday, I was watching on\n" \
+    "TV to learn python.\n" \
+    "Then, I have to go home and download python.\n" \
+    "So I have to try my first python lesson: print(). And I keep learning,\n" \
+    "Learning, and Learning! And now, I'm now a programmer.\n" \
+    "               The End!")
+
+    print(my_test_book) # Print my_test_book
+    print("\n" * 10) # Space 10 times
+    print(console.opposite(1234)) # opposite
+    print(console.floor(1.5)) # floor
+    print(console.ceiling(1.5)) # ceiling
+    "Write something on cmd input"
+    cmd = input("Enter command (Leave a blank if you want to skip): ") # Use cmd as an input
+    match cmd: # Match and case structure.
+        case "":
+            ...
+        case _:
+            console.cmd(cmd)
+"This is the end the line of code Thanks for previewing!"
