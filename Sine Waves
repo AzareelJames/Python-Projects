@@ -1,3 +1,5 @@
+"Up and down arrow key to change the length"
+"And Left and Right arrow key to change it's speed."
 import turtle
 import math
 import keyboard
