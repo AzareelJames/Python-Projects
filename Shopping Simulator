@@ -1,0 +1,54 @@
+from time import sleep
+from random import randint as rt
+all_fruits = {"apple": 23, "banana": 15, "orange": 35,
+"pineapple": 132, "coconut": 93, "watermelon": 156, "pear": 30, "blueberry": 10}
+money = rt(200, 1000)
+cart = []
+while True:
+    print(f"Your current money is {money}")
+    choice = input(f"All Fruits: {all_fruits}\nCart: {cart}\n\
+Choose your fruit or type \"pay\" to pay or type \"remove\" to \
+remove something from the cart: ").lower()
+    if choice in all_fruits:
+        try:
+            many = input(f"How many do you like to buy? ")
+            many = int(many)
+        except ValueError:
+            print(f"Invalid number: {many}")
+            continue
+        costs = all_fruits[choice] * many
+        YesorNo = input(f"Are you sure to buy this fruit {choice} ({many})? It costs {costs} (Y/N) ")
+        if YesorNo.upper()[0] == "Y":
+            for i in range(many):
+                cart.append(choice)
+    elif choice == "pay":
+        if not cart == []:
+            break
+        else:
+            print("Cannot pay when cart is empty")
+    elif choice == "remove":
+        if not cart == []:
+            remove = input(f"Cart: {cart}\nWhat do you remove: ")
+            if remove in cart:
+                cart.remove(remove)
+            else:
+                print("Nothing found in the cart")
+        else:
+            print("Cannot remove when cart is empty")
+    else:
+        print(f"No fruit found: \"{choice}\"")
+
+total = 0
+for item in cart:
+    costs = 0
+    costs = all_fruits[item]
+    money -= costs
+    total += costs
+    print(f"Item: {item} Costs: {costs} Current Money: {money} Total: {total}")
+    sleep(0.5)
+
+print(f"Since the total is {total}")
+print(f"And your current money is now {money}")
+print("So...")
+sleep(3)
+print("You Won! 🏆") if money >= 0 else print("You Lose and cannot pay 😞")
