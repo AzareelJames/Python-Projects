@@ -1,0 +1,53 @@
+"Typing speed test"
+"Import"
+from tkinter import * # import all from tkinter
+from time import time # import time from time
+
+"Setup GUI"
+root = Tk() # root = Tk()
+root.config(bg="black") # Set background to black
+root.title("Typing speed test") # name the title "Typing speed test"
+root.geometry("400x300") # set geometry to 400x300
+started = False
+"Setup widgets"
+input = Entry(root, font=("", 20)) # input
+check = Button(root, text="Check Speed", font=("", 24)) # check
+result = Label(root, text="...", font=("", 20)) # result
+"check_speed function"
+def check_speed():
+    global started # global started variable
+    started = False
+    result.config(text=f"Typing Speed: {round(len(input.get()) / (time() - start))} chrs/sec")
+    check.place_forget() # Hide Check Speed button
+    input.place_forget() # Hide Entry
+    result.place(relx=0.5, rely=0.5, anchor=CENTER) # Place it to the center
+    startbtn.place(relx=0.5, rely=0.7, anchor=CENTER) # Show it again
+startbtn = Button(root, text="Start", font=("", 24)) # startbtn
+"begin function"
+def begin():
+    input.focus() # Focus whenever begin
+    global started # global started variable
+    started = True
+    global start # global start variable
+    input.delete(0, END)
+    start = time() # start time
+    result.place_forget() # Hide result
+    startbtn.place_forget() # hide
+    check.config(command=check_speed) # Check Speed whenever is clicked.
+    check.place(relx=0.5, rely=0.7, anchor=CENTER) # Show Check Speed Button
+    input.place(relx=0.5, rely=0.5, anchor=CENTER) # place it to the center
+
+startbtn.config(command=begin) # begin whenever is clicked.
+def begin_press(key):
+    if not started:
+        begin()
+
+def check_speed_press(key):
+    if started:
+        check_speed()
+"root bind keys"
+root.bind("<space>", begin_press)
+root.bind("<Return>", check_speed_press)
+startbtn.place(relx=0.5, rely=0.5, anchor=CENTER) # Place to the middle
+
+root.mainloop() # mainloop
