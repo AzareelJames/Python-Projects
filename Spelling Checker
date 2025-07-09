@@ -1,0 +1,57 @@
+"import"
+from tkinter import * # tkinter
+try:
+    print("Importing textblob...")
+    from textblob import TextBlob # textblob
+    print("Finished")
+except Exception:
+    "If textblob is not pip installed"
+    from os import system # import os
+    print("Error: no module named 'textblob'") # Send a message
+    "Ask"
+    match input("Are you sure to pip install textblob? (Y/N) ").upper()[0]:
+        case "Y":
+            import platform # import platform
+            os = platform.system()
+            if os != "Windows": # Check if is not Windows
+                class InvalidOSError(Exception):
+                    """
+                    This Exception means this is invalid
+                    os.\n
+                    Example:\n
+                        Try to pip install something...\n
+                        But if your not on windows, then\n
+                        this raises an Exception:\n
+                            InvalidOSError
+                    """
+                raise InvalidOSError(f"OS Must be Windows, not {os}")
+            system("start cmd /c pip install textblob") # opens cmd
+    exit() # exit the program
+
+"Setup root"
+root = Tk()
+root.title("Spelling Checker") # Name the title
+root.geometry("400x300") # Set geometry
+"Setup Widgets"
+"Setup input"
+input = Entry(root, font=("", 15))
+input.place(relx=0.5, rely=0.5, anchor=CENTER) # Place it to the center
+"Setup Label"
+Label(root, text="Spelling Checker", font=("", 24)).place(
+    relx=0.5, rely=0.3, anchor=CENTER # Place to the center
+)
+"Setup Check button, result, and scan function"
+check = Button(root, text="Check", font=("", 10))
+result = Label(root, text="Result: -", font=("", 20))
+result.place(relx=0.5, rely=0.8, anchor=CENTER)
+def scan(key=None):
+    result.config(text="Calculating...") # Calculating...
+    corrected = TextBlob(input.get()).correct()
+    result.config(text=f"Result: {corrected}")
+
+check.place(relx=0.5, rely=0.6, anchor=CENTER)
+check.config(command=scan)
+root.bind("<Return>", scan) # Press Enter to check
+
+root.mainloop() # mainloop
+print("*Closes the application*")
