@@ -1,0 +1,78 @@
+from tkinter import *
+from time import time
+class InvalidOSError(Exception): ...
+from platform import system
+
+if not system() == "Windows":
+    raise InvalidOSError("this application is only for windows")
+
+from winsound import Beep
+
+root = Tk()
+root.config(bg="black")
+root.title("Timer for Windows")
+root.geometry("400x300")
+started = 0
+beep = 0
+
+text = Label(root, text="Timer", font=("", 25), fg="white", bg="black")
+text.place(relx=0.5, rely=0.3, anchor=CENTER)
+
+timer = Entry(root, font=("", 20))
+timer.focus()
+timer.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+btn = Button(root, text="Start", font=("", 24))
+btn.place(relx=0.5, rely=0.8, anchor=CENTER)
+
+left = Label(root, text="---", font=
+("", 65), fg="white", bg="black")
+def BEEP() -> None:
+    Beep(625, 1000)
+    root.after(20, BEEP)
+def calculate(seconds) -> str:
+    seconds = int(seconds)
+    minutes = seconds // 60
+    minutes %= 60
+    
+    hours = minutes // 3600
+    seconds %= 60
+    return f"{hours}:{minutes}:{seconds+1}"
+def run() -> None:
+    if not time() >= end_time:
+        left.config(text=f"{calculate(end_time - time())}")
+        root.after(50, run)
+    else:
+        global beep
+        beep = 1
+        left.config(text="TIME'S UP!")
+        root.after(50, BEEP)
+def start() -> None:
+    global end_time
+    global started
+    try:
+        if float(timer.get()) <= 0: return
+    except Exception:
+        return
+    
+    btn.place_forget()
+    timer.place_forget()
+    text.place_forget()
+
+    left.place(relx=0.5, rely=0.5, anchor=CENTER)
+    end_time = time() + float(timer.get())
+    started = 1
+    run()
+    
+
+
+btn.config(command=start)
+def bind_key(key):
+    if not started:
+        start()
+    elif beep:
+        root.destroy()
+        exit()
+root.bind("<Return>", bind_key)
+
+root.mainloop()
