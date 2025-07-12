@@ -34,10 +34,11 @@ def calculate(seconds) -> str:
     seconds = int(seconds)
     minutes = seconds // 60
     minutes %= 60
-    
-    hours = minutes // 3600
     seconds %= 60
-    return f"{hours}:{minutes}:{seconds+1}"
+    
+    hours = minutes // 60
+    seconds %= 3600
+    return f"{hours}:{minutes}:{seconds}"
 def run() -> None:
     if not time() >= end_time:
         left.config(text=f"{calculate(end_time - time())}")
