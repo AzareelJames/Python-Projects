@@ -1,0 +1,178 @@
+"Welcome to features and math class!"
+if not __name__ == "__main__":
+    print("Welcome! I hope you enjoy these 2 classes I made :)")
+    print("So you have to follow me on facebook")
+    print("If you love coding python!")
+else: print(f"Your checking in this module {__file__}")
+
+"Created by Azareel James (AJ)"
+
+"Without AI 100%"
+
+"math"
+class math:
+    "Remake of math module"
+
+    "class variables"
+    inf = 1E+2763
+    "Returns inf"
+    nan = inf - inf
+    "Returns nan"
+    zero = 0
+    "Returns 0"
+
+    "definitions"
+    def pickint(x: int, y: int) -> int:
+        "Returns a random integer"
+        class RandomError(Exception): "An Exception for pickint"
+        if y < x:
+            raise RandomError(f"y argument must be greater than x argument")
+        
+        randlist = []
+        for n in range(x, y+1):
+            randlist.append(str(n)) # append
+        return int(list(set(randlist))[0]) # return
+    
+    def hit(chance: int) -> bool:
+        "Returns True or False if hits a chance"
+        class HitError(Exception): ...
+        if features.TypeName(chance) != "int":
+            raise HitError("chance argument must be int")
+        
+        return math.pickint(1, 100) <= chance
+    
+    count = lambda x, y: list(range(x, y+1))
+    "Returns a list"
+
+    def factorial(number: int) -> int:
+        "Returns a factorial number"
+        class FactorialError(Exception): ...
+        if features.TypeName(number) != "int":
+            raise FactorialError("a number must be int")
+        elif number < 0:
+            raise FactorialError("a number must be over zero")
+        output = 1
+        "for loop"
+        for n in range(1, number+1):
+            output *= n
+        
+        return output # returns an output
+    
+    rt = lambda n, root=2: n ** (1/root)
+    "Returns a float"
+    floor = lambda n: int(float(n))
+    "Returns an integer (You can even use a string as int)"
+    ceiling = lambda n: math.floor(n) + 1
+    "Returns a ceiling number"
+
+    def factors(n: int) -> list:
+        "Returns a list of factors"
+        class FactorsError(Exception): ...
+
+        if features.TypeName(n) != "int":
+            raise FactorsError("Number must be int")
+        
+        factors_list = [] # Empty list
+        "for loop"
+        for i in math.count(1, n):
+            if n % i == 0: factors_list.append(i)
+        
+        return factors_list # returns a factors list
+
+    prime = lambda n: not math.factors(n)[1:-2]
+    "Returns True of False if is prime"
+    composite = lambda n: not math.prime(n)
+    "Returns True or False if is composite"
+    random = lambda: math.pickint(1000, 100000) / 100000
+    "Returns a float"
+
+    def ConvertTime(seconds: int) -> str:
+        "Returns a converted seconds to time"
+        seconds = int(seconds)
+        minutes = seconds // 60
+        minutes %= 60
+        
+        hours = seconds // 3600
+        seconds %= 60
+        seconds %= 3600
+
+        return f"{hours}:{minutes}:{seconds}" # returns HH:MM:SS
+"features"
+class features:
+    "All useful features in python I made"
+    "definitions"
+    TypeName = lambda obj: type(obj).__name__
+    "Returns a Type Name"
+    main = lambda: __name__ == "__main__"
+    "Instead of __name__ == '__main__' use features.main()"
+    letters = [chr(c) for c in range(65, 91)] # A-Z list
+    "Returns a list of letters"
+
+    def unpack(list_obj: list) -> str:
+        "Unpacks the list"
+        class UnpackError(Exception): ...
+
+        if features.TypeName(list_obj) != "list":
+            raise UnpackError("Argument must be a list")
+        
+        "output variable"
+        output = str(list_obj)
+        output = output.removeprefix("[")
+        output = output.removesuffix("]")
+        return output # return output
+    
+    conbime = lambda x, y: str(x)+str(y)
+    "Combines 2 other types and returns a string"
+
+    "These 2 functions are only for windows"
+    from os import name
+    if name == "nt":
+        def pipInstall(pip) -> None: # Only for nt (Windows)
+            "Opens command and install"
+            from os import system
+            system(f"start cmd /c pip install {pip}")
+        
+        def pipUninstall(pip) -> None: # Only for nt (Windows)
+            "Opens command and uninstall"
+            from os import system
+            system(f"start cmd /c pip uninstall {pip}")
+    else:
+        def pipInstall(pip) -> None:
+            "This function doesn't work here"
+            print("Sorry! This function is only for nt (Windows)")
+        
+        def pipUninstall(pip) -> None:
+            "This function doesn't work here"
+            print("Sorry! This function is only for nt (Windows)")
+
+    def IdTotalLocals() -> int:
+        TotalId = 0 # Variable
+        "for loop"
+        for local in list(locals()):
+            TotalId += id(local) # add
+            
+        return TotalId # returns a Total of Id's
+"Test"
+if features.main():
+    print("math")
+    print(math.inf, math.nan, math.zero)
+    print(math.pickint(1, 10))
+    print(math.hit(50)) # 50% Chance
+    print(math.factorial(10))
+    print(math.rt(27, 3))
+    print(math.floor(2763.2763))
+    print(math.ceiling(2763.2763))
+    print(math.factors(2763))
+    print(math.prime(2763))
+    print(math.random())
+    print(math.ConvertTime(2763))
+
+    print("features")
+    print(features.TypeName("Hello World!"))
+    print(features.main())
+    print(features.letters)
+    print(features.unpack([1, 2, 3, 4, 5]))
+    print(features.conbime("Hello World! This is ", True))
+   #print(features.pipInstall("keyboard"))
+   #print(features.pipUninstall("keyboard"))
+    print(features.IdTotalLocals())
