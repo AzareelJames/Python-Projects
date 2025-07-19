@@ -1,0 +1,51 @@
+"import"
+from tkinter import *
+from requests import get
+"setup root"
+root = Tk()
+root.title("KJV Bible") # Name title
+root.geometry("400x300") # set geometry
+root.config(bg="light blue") # set background to light blue
+"setup widgets"
+Label(root, text="KJV Bible 📖", font=("", 24)).place(relx=0.5,
+rely=0.1, anchor=CENTER) # Title
+
+"setup book, chapter, and verse"
+book = Entry(root, width=24, font=("", 15))
+book.insert(0, "John")
+book.place(relx=0.5, rely=0.3, anchor=CENTER)
+
+chapter = Entry(root, width=24, font=("", 15))
+chapter.insert(0, "3")
+chapter.place(relx=0.5, rely=0.4, anchor=CENTER)
+
+verse = Entry(root, width=24, font=("", 15))
+verse.insert(0, "16")
+verse.place(relx=0.5, rely=0.5, anchor=CENTER)
+"setup Read, result, and function"
+read = Button(root, text="Read", font=("", 15))
+result = Label(root, text="B C:V: ...", font=("", 15), justify=LEFT,
+wraplength=1111)
+result.place(relx=0.5, rely=0.8, anchor=CENTER)
+def Read():
+    b = book.get()
+    c = chapter.get()
+    v = verse.get()
+    bible = get(f"https://bible-api.com/{b}+{c}:{v}?translation=kjv")
+    code = bible.status_code
+    result.config(text="Program Error: There's might be an Exception")
+    if code == 200:
+        length = len(f"{b} {c}:{v}\n {bible.json()["text"]}")
+        result.config(font=("", int((1000 - length) // 55)))
+        result.config(text=f"{b} {c}:{v}\n {bible.json()["text"]}")
+    else:
+        result.config(text=f"{code} Error: {bible.json()["error"]}") # 404 Error
+
+def loading(key=""):
+    result.config(text="Loading...") # Loading...
+    root.after(50, Read)
+"bind and mainloop"
+read.place(relx=0.8, rely=0.5, anchor=CENTER) # place
+read.config(command=loading) # Read whenever is clicked
+root.bind("<Return>", loading) # Read whenever enter is pressed
+root.mainloop() # mainloop
