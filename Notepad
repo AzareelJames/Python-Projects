@@ -1,0 +1,53 @@
+"Notepad in python"
+"import"
+from tkinter import * # import all from tkinter
+from tkinter import filedialog # import filedialog from tkinter
+from tkinter import messagebox # import messagebox from tkinter
+
+"setup root"
+root = Tk()
+root.title("Notepad")
+root.geometry("400x300")
+
+"setup widgets"
+notepad = Text(root, width=115, height=25, font=(NORMAL))
+notepad.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+"Save"
+def savefile() -> None:
+    path = filedialog.asksaveasfilename(filetypes=[("Text", "*.txt"),
+    ("All files", "*.*")], defaultextension=".txt")
+    if path:
+        with open(path, "w") as file:
+            if file.writable():
+                try:
+                    content = notepad.get(1.0, END)
+                    file.write(content)
+                    messagebox.showinfo("Successfully", "File saved")
+                except Exception as e:
+                    messagebox.showerror("Error occured:", e)
+            else:
+                messagebox.showerror("Error", "File is not writable")
+            
+save = Button(root, text="Save", font=("", 20), command=
+savefile)
+save.place(relx=0, rely=0)
+"Load"
+def loadfile() -> None:
+    path = filedialog.askopenfilename(filetypes=[("Text.txt", "*.txt"), 
+    ("All files", "*.*")])
+    if path:
+        with open(path, "r") as file:
+            if file.readable():
+                try:
+                    notepad.delete(1.0, END)
+                    notepad.insert(1.0, file.read())
+                except Exception as e:
+                    messagebox.showerror("Error occured:", e)
+            else:
+                messagebox.showerror("Error", "File is not readable")
+load = Button(root, text="Load", font=("", 20),
+command=loadfile)
+load.place(relx=0.1, rely=0)
+
+root.mainloop() # mainloop
