@@ -1,0 +1,101 @@
+"This calculator is 100% safe and created by myself"
+"import"
+from tkinter import * # import all from tkinter
+import math # import math
+
+"setup root (master)"
+root = Tk()
+root.title("Calculator")
+root.geometry("400x300") # set it to 400x300
+
+"setup widgets"
+Label(root, text="Calulator", font=("", 50)).place(
+relx=0.5, rely=0.1, anchor=CENTER
+)
+"setup Entry"
+entry = Entry(root, font=("", 20))
+entry.place(relx=0.5, rely=0.3, anchor=CENTER)
+"setup keywords"
+__keywords__ =(
+"""
+Keywords:\n
+#. symbol - means
+1. = - Is equal?
+2. ^ - exponent
+3. % - modulo
+4. // - floor division
+5. 1 - True
+6. 0 - False
+7. != - Not equals to
+8. or - only one is True
+9. and - both to be True
+10. pi - 3.14159...
+11. e - 2.71...
+12. tau - 6.2831...
+13. not - opposite
+14. x - Same as *
+""")
+keywords = Label(root, text=__keywords__, font=("", 24))
+keywords.place(relx=0.15, rely=0.5, anchor=CENTER)
+"setup calculate button and result"
+result = Label(root, font=("", 20), justify=CENTER,
+wraplength=350)
+result.place(relx=0.5, rely=0.5, anchor=NW)
+def evaluate(key="") -> None:
+    equation = entry.get()
+    if not equation: return
+    try:
+        "some symbols are not allowed in this equation"
+        if "\"" in equation or "'" in equation:
+            result.config(text="Quotes are not allowed in this equation")
+            return
+        elif "[" in equation or "]" in equation:
+            result.config(text="Square brackets are not allowed in this equation")
+            return
+        elif "{" in equation or "}" in equation:
+            result.config(text="Square braces are not allowed in this equation")
+            return
+        elif "**" in equation:
+            result.config(text="Double asterisk is not allowed in this equation\n" \
+            "(Did you mean '^' instead of '**')")
+            return
+        elif "==" in equation:
+            result.config(text="Double equal is not allowed in this equation\n" \
+            "(Did you mean '=' instead of '==')")
+            return
+        elif "|" in equation:
+            result.config(text="Bars are not allowed in this equation")
+            return
+        elif "#" in equation:
+            result.config(text="comments are not allowed in this equation")
+            return
+        elif "is" in equation:
+            result.config(text="is keywords are not allowed in this equation")
+            return
+
+        "calulate and replace"
+        equation = equation.replace("^", "**")
+        equation = equation.replace("pi", str(math.pi))
+        equation = equation.replace("e", str(math.e))
+        equation = equation.replace("tau", str(math.tau))
+        equation = equation.replace("x", "*")
+        equation = equation.replace("=", "==")
+
+        answer = eval(equation, {}, "<mapping>")
+        answer = f"{answer:,}"
+        result.config(text=answer)
+    except ZeroDivisionError:
+        result.config(text="Cannot divide by Zero")
+    except SyntaxError:
+        result.config(text="Invalid Syntax")
+    except TypeError:
+        result.config(text="You cannot hack this program")
+    except Exception:
+        result.config(text="Something went wrong...")
+        
+calculate = Button(root, text="Calculate", font=("", 20),
+command=evaluate)
+calculate.place(relx=0.5, rely=0.4, anchor=CENTER)
+"mainloop"
+root.bind("<Return>", evaluate) # calculate whenever enter is pressed
+root.mainloop() # keep the window open
