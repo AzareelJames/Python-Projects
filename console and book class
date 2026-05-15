@@ -1,5 +1,5 @@
 "Welcome! Use console or book to explore!"
-"Scroll down and you see the test category, good luck!"
+"Scroll down and you see the test category"
 from os import system, name # import functions from os
 "console"
 class console:
